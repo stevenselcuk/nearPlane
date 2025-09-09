@@ -1,8 +1,11 @@
 # nearPlane ADSB Tracker for M5StickC Plus 2
 
-This project transforms your M5StickC Plus 2 into a portable, real-time aircraft tracker. By leveraging the power of the ESP32 and a vibrant color display, you can monitor air traffic in your vicinity with ease. This application is perfect for aviation enthusiasts, curious minds, and anyone who's ever looked up at the sky and wondered, "What plane is that?"
+So, I was inspired by [this](https://www.reddit.com/r/ADSB/comments/1nbsb3c/inspired_by_ufil1983s_nearest_aircraft_display_i/) reddit post, and he was inspired by [this one](https://www.reddit.com/r/ADSB/comments/1nb56ld/nearest_aircraft_display/). But hey, in the end, I created this nearPlane.
 
-The tracker fetches data from **adsb.lol**, a free, open-source community-driven project that collects and provides real-time ADS-B (Automatic Dependent Surveillance-Broadcast) data from aircraft around the world. This allows you to see detailed flight information without needing your own expensive radio hardware.
+It transforms your `M5StickC Plus 2 thing` which dying in your stuff drawer (I know you have one, everybody does, no worries) into a portable, real-time aircraft tracker. No need to check Flightradar or something else. IDK if you're that much of an avgeek, but it's perfect for aviation enthusiasts, curious minds, and anyone who's ever looked up at the sky and wondered, "What plane is that?"
+
+The tracker fetches data from **adsb.lol**, a free, open-source community-driven project that collects and provides real-time `ADS-B` (Automatic Dependent Surveillance-Broadcast) data from aircraft around the world. This allows you to see detailed flight information without needing your own expensive radio hardware.
+
 
 ## Features
 
@@ -14,24 +17,27 @@ The tracker fetches data from **adsb.lol**, a free, open-source community-driven
 *   **OTA Ready**: Built with the necessary libraries to be extended for Over-the-Air firmware updates.
 *   **Factory Reset**: An easy hardware-button-based reset to clear settings.
 
-## Prerequisites
 
-*   M5StickC Plus 2 Development Kit.
-*   A computer with the [Arduino IDE](https://www.arduino.cc/en/software) installed.
-*   A USB-C cable for programming and charging.
+## Do you want one? 
 
-## Installation Guide
+### Prerequisites
+
+*   Buy a M5StickC Plus 2 (ask your wife before order one)
+*   Ensure [Arduino IDE](https://www.arduino.cc/en/software) installed
+*   A USB-C cable for programming and charging
+
+### Installation Guide
 
 Follow these steps to compile and upload the tracker firmware to your M5StickC Plus 2.
 
-### 1. Install USB Driver
+#### 1. Install USB Driver
 
 The M5StickC Plus 2 uses a CH9102 chip for USB communication. You will need to install the driver for your operating system to ensure your computer can communicate with the device.
 
 *   **Windows**: [Download and install the CH9102 driver](https://docs.m5stack.com/en/core/M5StickC%20PLUS2).
 *   **MacOS**: MacOS should detect the device automatically. If not, the driver can be found on the same M5Stack documentation page.
 
-### 2. Configure Arduino IDE for M5Stack
+#### 2. Configure Arduino IDE for M5Stack
 
 1.  Open the Arduino IDE.
 2.  Go to **File > Preferences** (or **Arduino IDE > Settings...** on MacOS).
@@ -41,13 +47,13 @@ The M5StickC Plus 2 uses a CH9102 chip for USB communication. You will need to i
     ```
 4.  Click **OK**.
 
-### 3. Install M5StickC Plus 2 Board Support
+#### 3. Install M5StickC Plus 2 Board Support
 
 1.  Go to **Tools > Board > Boards Manager...**.
 2.  Search for `M5Stack`.
 3.  Install the "M5Stack Boards" package by M5Stack.
 
-### 4. Install Required Libraries
+#### 4. Install Required Libraries
 
 This project requires two main libraries.
 
@@ -56,7 +62,7 @@ This project requires two main libraries.
     *   `M5Unified` (Install the latest version).
     *   `ArduinoJson` by Benoit Blanchon (Install the latest version).
 
-### 5. Load and Burn the Firmware
+#### 5. Load and Burn the Firmware
 
 1.  Clone this repository or download the source code.
 2.  Open the main `.ino` file in the Arduino IDE.
@@ -65,7 +71,7 @@ This project requires two main libraries.
 5.  Go to **Tools > Port** and select the serial port corresponding to your device (e.g., `COM3` on Windows, `/dev/cu.wchusbserial...` on MacOS).
 6.  Click the **Upload** button (the arrow icon) to compile and flash the firmware to the device.
 
-## Device Configuration
+### Device Configuration
 
 After successfully burning the firmware, the device will boot into "SETUP MODE" for the first time.
 
@@ -81,7 +87,7 @@ After successfully burning the firmware, the device will boot into "SETUP MODE" 
 
 The M5StickC Plus 2 will save your settings and restart. It will then automatically connect to your specified Wi-Fi network and begin tracking aircraft.
 
-## Usage
+### Usage
 
 *   **Change Page**: Short press the large button on the front (BtnA) to cycle through the different information pages.
 *   **Reset Settings**: To clear all saved settings and re-enter "SETUP MODE", press and hold the right-side button (BtnB) for 5 seconds. A confirmation screen will appear during the hold.
