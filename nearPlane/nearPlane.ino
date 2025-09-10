@@ -25,6 +25,9 @@ unsigned long lastPollTime = 0;
 int currentPage = 0;
 JsonDocument doc;
 String lastSeenAircraftReg = "";
+String departureAirport = "N/A";
+String arrivalAirport = "N/A";
+String lastFlightCodeForDetails = "";
 
 unsigned long btnB_press_start_time = 0;
 bool isResetting = false;
@@ -40,6 +43,7 @@ void displayCurrentPage();
 void startConfigMode();
 void loadSettingsAndConnect();
 void fetchAircraftData();
+void fetchFlightDetails(String flightCode);
 void playNewAircraftSound();
 void handleButtons();
 void drawResetScreen(int seconds_left);
@@ -275,16 +279,15 @@ void displayCurrentPage() {
       canvas.setTextDatum(TL_DATUM);
       canvas.drawString("ALT", 15, 75);
       canvas.drawString("GND SPD", 15, 95);
-      canvas.drawString("DIST", 15, 115);
+      canvas.drawString("ROUTE", 15, 115);
 
       canvas.setFont(&fonts::FreeSansBold12pt7b);
       canvas.setTextDatum(TR_DATUM);
       canvas.drawString(String(aircraft["alt_baro"] | 0) + " ft", 225, 75);
       canvas.drawString(String(aircraft["gs"].as<float>(), 0) + " kt", 225, 95);
       
-      String distStr = String(aircraft["dst"].as<float>(), 1) + "km /" + String(aircraft["dir"].as<float>(), 0);
-      canvas.drawString(distStr, 218, 115);
-      drawDegreeSymbol(222, 115 + 3);
+      String route = departureAirport + " > " + arrivalAirport;
+      canvas.drawString(route, 225, 115);
       break;
     }
     case 1: { 
@@ -402,6 +405,49 @@ void displayCurrentPage() {
   canvas.pushSprite(0,0);
 }
 
+void fetchFlightDetails(String flightCode) {
+    if (flightCode == "N/A" || flightCode.isEmpty() || flightCode == lastFlightCodeForDetails) {
+        return;
+    }
+
+    departureAirport = "-";
+    arrivalAirport = "-";
+
+    JsonDocument requestDoc;
+    JsonArray planes = requestDoc["planes"].to<JsonArray>();
+    JsonObject plane = planes.add<JsonObject>();
+    plane["callsign"] = flightCode;
+    plane["lat"] = 0;
+    plane["lng"] = 0;
+    
+    String requestBody;
+    serializeJson(requestDoc, requestBody);
+
+    HTTPClient http;
+    http.begin("https://api.adsb.lol/api/0/routeset");
+    http.addHeader("Content-Type", "application/json");
+
+    int httpCode = http.POST(requestBody);
+
+    if (httpCode == HTTP_CODE_OK) {
+        JsonDocument responseDoc;
+        DeserializationError error = deserializeJson(responseDoc, http.getStream());
+        if (!error && responseDoc.is<JsonArray>() && responseDoc.as<JsonArray>().size() > 0) {
+            JsonObject flightInfo = responseDoc[0];
+            if (flightInfo.containsKey("_airport_codes_iata")) {
+                String routeStr = flightInfo["_airport_codes_iata"].as<String>();
+                int separator = routeStr.indexOf('-');
+                if (separator > 0) {
+                    departureAirport = routeStr.substring(0, separator);
+                    arrivalAirport = routeStr.substring(separator + 1);
+                }
+            }
+        }
+    }
+    lastFlightCodeForDetails = flightCode;
+    http.end();
+}
+
 void fetchAircraftData() {
   if (WiFi.status() != WL_CONNECTED) { return; }
   
@@ -427,10 +473,18 @@ void fetchAircraftData() {
           playNewAircraftSound();
       }
       lastSeenAircraftReg = currentAircraftReg;
+      
+      String flightCode = doc["ac"][0]["flight"] | "N/A";
+      flightCode.trim();
+      fetchFlightDetails(flightCode);
+
       displayCurrentPage();
       pollInterval = SHORT_POLL_INTERVAL;
     } else {
       lastSeenAircraftReg = "";
+      lastFlightCodeForDetails = "";
+      departureAirport = "N/A";
+      arrivalAirport = "N/A";
       doc.clear();
       displayCurrentPage();
       pollInterval = NO_AIRCRAFT_POLL_INTERVAL;
@@ -438,6 +492,9 @@ void fetchAircraftData() {
   } else {
     doc.clear();
     lastSeenAircraftReg = "";
+    lastFlightCodeForDetails = "";
+    departureAirport = "N/A";
+    arrivalAirport = "N/A";
     canvas.fillScreen(TFT_MAROON);
     canvas.setTextColor(TFT_WHITE);
     canvas.setTextDatum(MC_DATUM);
