@@ -1,5 +1,7 @@
 # nearPlane ADSB Tracker for M5StickC Plus 2
 
+![nearPlane](https://i.imgur.com/vP2evm9.jpeg)
+
 
 So, I was inspired by [this](https://www.reddit.com/r/ADSB/comments/1nbsb3c/inspired_by_ufil1983s_nearest_aircraft_display_i/) reddit post, and he was inspired by [this one](https://www.reddit.com/r/ADSB/comments/1nb56ld/nearest_aircraft_display/). But hey, in the end, I created this nearPlane.
 
