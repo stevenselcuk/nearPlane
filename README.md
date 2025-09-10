@@ -1,6 +1,5 @@
 # nearPlane ADSB Tracker for M5StickC Plus 2
 
-![nearPlane how its look like](https://i.imgur.com/hCl38HU.jpeg)
 
 So, I was inspired by [this](https://www.reddit.com/r/ADSB/comments/1nbsb3c/inspired_by_ufil1983s_nearest_aircraft_display_i/) reddit post, and he was inspired by [this one](https://www.reddit.com/r/ADSB/comments/1nb56ld/nearest_aircraft_display/). But hey, in the end, I created this nearPlane.
 
@@ -8,19 +7,17 @@ It transforms your `M5StickC Plus 2 thing` which dying in your stuff drawer (I k
 
 The tracker fetches data from **adsb.lol**, a free, open-source community-driven project that collects and provides real-time `ADS-B` (Automatic Dependent Surveillance-Broadcast) data from aircraft around the world. This allows you to see detailed flight information without needing your own expensive radio hardware.
 
-
 ## Features
 
 *   **Real-Time Tracking**: Displays the closest aircraft's flight data, updated every few seconds.
+*   **Reliable Flight Route Information**: Displays the departure and arrival airports (IATA codes) for most commercial flights by querying the adsb.lol API directly.
 *   **Multi-Page Interface**: Cycle through 6 different pages of detailed telemetry, including altitude, speed, heading, squawk code, and more.
 *   **Emergency Alerts**: The display highlights aircraft with emergency squawk codes (7500, 7600, 7700).
 *   **Audible Alerts**: Plays a distinct tone when a new aircraft is detected.
 *   **Easy Web-Based Configuration**: An initial setup mode allows you to easily connect the device to your Wi-Fi and set your location.
-*   **OTA Ready**: Built with the necessary libraries to be extended for Over-the-Air firmware updates.
 *   **Factory Reset**: An easy hardware-button-based reset to clear settings.
 
-
-## Do you want one? 
+## Do you want one?
 
 ### Prerequisites
 
@@ -93,6 +90,20 @@ The M5StickC Plus 2 will save your settings and restart. It will then automatica
 
 *   **Change Page**: Short press the large button on the front (BtnA) to cycle through the different information pages.
 *   **Reset Settings**: To clear all saved settings and re-enter "SETUP MODE", press and hold the right-side button (BtnB) for 5 seconds. A confirmation screen will appear during the hold.
+
+## Changelog
+
+**v1.1 - Sep 10,2025**
+
+*   **Flight Route Fetching**:
+    *   Implemented the correct and most reliable method by sending a `POST` request to the `https://api.adsb.lol/api/0/routeset` endpoint with the current aircraft's callsign.
+    *   This provides significantly more accurate departure and arrival airport data directly from the adsb.lol ecosystem, eliminating the need for external API keys and solving previous issues with empty or incorrect route information.
+
+
+**v1.0 - Sep 9,2025**
+
+*   **Initial Release**:
+    *   Bare/minimum working copy
 
 ## Contributing
 
