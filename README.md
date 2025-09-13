@@ -19,6 +19,10 @@ The tracker fetches data from **adsb.lol**, a free, open-source community-driven
 *   **Easy Web-Based Configuration**: An initial setup mode allows you to easily connect the device to your Wi-Fi and set your location.
 *   **Factory Reset**: An easy hardware-button-based reset to clear settings.
 
+## Install
+
+It's listing on m5burner now! 🎉 Search as "nearPlane" and burn directly your device or 👇🏻
+
 ## Do you want one?
 
 ### Prerequisites
